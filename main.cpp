@@ -136,12 +136,6 @@ namespace ShortMap
 };
 
 
-void* newPtr(int size)
-{
-    return (void*)malloc(size);
-}
-
-
 static bool load_short(short* buf, int len, FILE* f)
 {
     size_t result = fread(buf, sizeof(short), len, f);
@@ -281,7 +275,7 @@ void initMapArrays()
 {
     if (!ShortMap::mapBase)
     {
-        ShortMap::mapBase = (unsigned short*)newPtr(sizeof(unsigned short) * WORLD_W * WORLD_H);
+        ShortMap::mapBase = (unsigned short*)malloc(sizeof(unsigned short) * WORLD_W * WORLD_H);
     }
 
     for (int i = 0; i < WORLD_W; i++)
@@ -289,13 +283,13 @@ void initMapArrays()
         ShortMap::map[i] = (unsigned short*)(ShortMap::mapBase + (i * WORLD_H));
     }
 
-    ShortMap::resHist = (short*)newPtr(ShortMap::HISTORY_LENGTH);
-    ShortMap::comHist = (short*)newPtr(ShortMap::HISTORY_LENGTH);
-    ShortMap::indHist = (short*)newPtr(ShortMap::HISTORY_LENGTH);
-    ShortMap::moneyHist = (short*)newPtr(ShortMap::HISTORY_LENGTH);
-    ShortMap::pollutionHist = (short*)newPtr(ShortMap::HISTORY_LENGTH);
-    ShortMap::crimeHist = (short*)newPtr(ShortMap::HISTORY_LENGTH);
-    ShortMap::miscHist = (short*)newPtr(ShortMap::MISC_HISTORY_LENGTH);
+    ShortMap::resHist = (short*)malloc(ShortMap::HISTORY_LENGTH);
+    ShortMap::comHist = (short*)malloc(ShortMap::HISTORY_LENGTH);
+    ShortMap::indHist = (short*)malloc(ShortMap::HISTORY_LENGTH);
+    ShortMap::moneyHist = (short*)malloc(ShortMap::HISTORY_LENGTH);
+    ShortMap::pollutionHist = (short*)malloc(ShortMap::HISTORY_LENGTH);
+    ShortMap::crimeHist = (short*)malloc(ShortMap::HISTORY_LENGTH);
+    ShortMap::miscHist = (short*)malloc(ShortMap::MISC_HISTORY_LENGTH);
 }
 
 
@@ -330,6 +324,8 @@ int main(int argc, char* argv[])
     {
         std::cout << "Must be called with one argument specifying a file to be opened." << std::endl;
         std::cout << "EXAMPLE: simcity2micropolis-sdl2pp about.cty" << std::endl;
+
+        return 0;
     }
 
     const std::string filename{ argv[1] };
